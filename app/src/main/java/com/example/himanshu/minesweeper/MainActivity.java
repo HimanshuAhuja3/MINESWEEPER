@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     LinearLayout rootLayout;
-    public int SIZE = 5;
+    public int SIZE =  5;
+    public static int MINE = 7;
     public ArrayList<LinearLayout> rows;
     public MSButton[][] board;
 
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rootLayout = findViewById(R.id.rootLayout);
         setupBoard();
+        mines(board);
+
     }
 
     private void setupBoard() {
@@ -68,30 +72,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(id==R.id.reset)
         {
             setupBoard();
+            mines(board);
         }
         else if(id==R.id.item1)
         {
             SIZE=5;
             setupBoard();
+            mines(board);
         }
         else if(id==R.id.item2)
         {
+            MINE=9;
             SIZE=6;
             setupBoard();
+            mines(board);
         }
         else if(id==R.id.item3)
         {
+            MINE=10;
             SIZE=7;
             setupBoard();
+            mines(board);
         }
         else if(id==R.id.item4)
         {
+            MINE=12;
             SIZE=8;
             setupBoard();
+            mines(board);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static void mines(MSButton[][] board)
+    {
+        Random ran = new Random();
+        int mineCount = 0;
+        while (mineCount < MINE)
+        {
+            int randomInteger = (int) (ran.nextDouble() * board.length);
+            int randomInteger2 = (int) (ran.nextDouble() * board[0].length);
+            if (board[randomInteger][randomInteger2].getText().equals("X"))
+                continue;
+            else
+            {
+                board[randomInteger][randomInteger2].setText("X");
+                mineCount++;
+            }
+        }
+
+    }
+
 
     @Override
     public void onClick(View view) {
